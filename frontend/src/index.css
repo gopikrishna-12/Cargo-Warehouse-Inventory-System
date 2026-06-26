@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@media (min-width: 768px) {
+  .desktop-sidebar-visible {
+    translate: 0px 0px !important;
+    transform: none !important;
+  }
+}

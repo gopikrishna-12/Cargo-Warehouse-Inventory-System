@@ -1,0 +1,18 @@
+[
+  {
+    "email": "superadmin@orbem.com",
+    "theme": "dark"
+  },
+  {
+    "email": "customer@orbem.com",
+    "theme": "dark"
+  },
+  {
+    "email": "worker@orbem.com",
+    "theme": "dark"
+  },
+  {
+    "email": "auditor@orbem.com",
+    "theme": "light"
+  }
+]

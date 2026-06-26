@@ -1,0 +1,83 @@
+[
+  {
+    "id": "u-1",
+    "email": "superadmin@orbem.com",
+    "name": "Super Admin Controller",
+    "role": "Admin",
+    "passwordHash": "$2b$10$Q247TDg/ea8UPSMHn4j6ne7tJWexzpawTHQXpn5W4FaxMhG2en3H.",
+    "description": "Full system orchestration, permission overrides, and security auditing.",
+    "isActive": true
+  },
+  {
+    "id": "u-2",
+    "email": "admin@orbem.com",
+    "name": "Operations Admin",
+    "role": "Operations Staff",
+    "passwordHash": "$2b$10$Q247TDg/ea8UPSMHn4j6ne7tJWexzpawTHQXpn5W4FaxMhG2en3H.",
+    "description": "Core inventory, client, and shipment lifecycle management.",
+    "isActive": true
+  },
+  {
+    "id": "u-3",
+    "email": "manager@orbem.com",
+    "name": "Zone A Warehouse Manager",
+    "role": "Warehouse Staff",
+    "passwordHash": "$2b$10$Q247TDg/ea8UPSMHn4j6ne7tJWexzpawTHQXpn5W4FaxMhG2en3H.",
+    "description": "Warehouse zoning, storage slots allocation, and intake approval.",
+    "isActive": true
+  },
+  {
+    "id": "u-4",
+    "email": "worker@orbem.com",
+    "name": "Floor Operator Staff",
+    "role": "Warehouse Staff",
+    "passwordHash": "$2b$10$Q247TDg/ea8UPSMHn4j6ne7tJWexzpawTHQXpn5W4FaxMhG2en3H.",
+    "description": "Touch-optimized task updates, storage scanning, and cargo sorting.",
+    "isActive": true
+  },
+  {
+    "id": "u-5",
+    "email": "dispatch@orbem.com",
+    "name": "Logistics Dispatch Lead",
+    "role": "Partner",
+    "passwordHash": "$2b$10$Q247TDg/ea8UPSMHn4j6ne7tJWexzpawTHQXpn5W4FaxMhG2en3H.",
+    "description": "Couriers tracking, delivery scheduling, and routing timelines.",
+    "isActive": true
+  },
+  {
+    "id": "u-6",
+    "email": "customer@orbem.com",
+    "name": "Zenith Shipping Client",
+    "role": "Customer",
+    "passwordHash": "$2b$10$Q247TDg/ea8UPSMHn4j6ne7tJWexzpawTHQXpn5W4FaxMhG2en3H.",
+    "description": "Customer Portal: view own cargo, download manifests, track shipping, billings.",
+    "isActive": true
+  },
+  {
+    "id": "u-7",
+    "email": "auditor@orbem.com",
+    "name": "Compliance Auditor",
+    "role": "Accounts Staff",
+    "passwordHash": "$2b$10$Q247TDg/ea8UPSMHn4j6ne7tJWexzpawTHQXpn5W4FaxMhG2en3H.",
+    "description": "Read-only access to operations logs, reports, and data exports.",
+    "isActive": true
+  },
+  {
+    "id": "u-8",
+    "email": "doc@orbem.com",
+    "name": "Documentation Specialist",
+    "role": "Documentation Executive",
+    "passwordHash": "$2b$10$Q247TDg/ea8UPSMHn4j6ne7tJWexzpawTHQXpn5W4FaxMhG2en3H.",
+    "description": "Upload, inspect, and organize shipping bills and custom declarations.",
+    "isActive": true
+  },
+  {
+    "id": "u-535963",
+    "email": "testoperator@orbem.com",
+    "name": "Test Operator",
+    "role": "Documentation Executive",
+    "description": "Documentation Executive user profile.",
+    "isActive": false,
+    "passwordHash": "$2b$10$8EVP0DaAJmKJmhHSSEvffu9ffa3dT6UvxBMeHKis3LhHm5gFdVkdW"
+  }
+]
