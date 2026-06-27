@@ -132,7 +132,8 @@ function Cargo() {
       toast.error("Auditor has read-only access. Actions blocked.");
       return;
     }
-    if (!formData.description.trim() || !formData.customer_id || !formData.warehouse_zone) {
+    const isCustomer = role === "Customer";
+    if (!formData.description.trim() || (!isCustomer && !formData.customer_id) || !formData.warehouse_zone) {
       toast.error("Please fill in all required fields.");
       return;
     }
@@ -152,7 +153,7 @@ function Cargo() {
       await apiService.createCargo({
         description: serializedDesc,
         status: formData.status,
-        customer_id: formData.customer_id
+        customer_id: isCustomer ? undefined : formData.customer_id
       });
 
       toast.success("New cargo intaken and logged successfully!");
@@ -194,7 +195,8 @@ function Cargo() {
       toast.error("Auditor has read-only access. Actions blocked.");
       return;
     }
-    if (!formData.description.trim() || !formData.customer_id || !formData.warehouse_zone) {
+    const isCustomer = role === "Customer";
+    if (!formData.description.trim() || (!isCustomer && !formData.customer_id) || !formData.warehouse_zone) {
       toast.error("Please fill in all required fields.");
       return;
     }
@@ -214,7 +216,7 @@ function Cargo() {
       await apiService.updateCargo(selectedCargo.id, {
         description: serializedDesc,
         status: formData.status,
-        customer_id: formData.customer_id
+        customer_id: isCustomer ? undefined : formData.customer_id
       });
 
       toast.success("Cargo specifications updated successfully!");
@@ -290,14 +292,6 @@ function Cargo() {
 
   // Filter and search
   const filteredCargo = cargoList.filter((item) => {
-    if (role === "Customer") {
-      const companyName = item.customers?.company_name?.toLowerCase() || "";
-      const userPrefix = user?.email ? user.email.split("@")[0].toLowerCase() : "";
-      if (!companyName.includes("zenith") && (userPrefix && !companyName.includes(userPrefix))) {
-        return false;
-      }
-    }
-
     const details = parseCargo(item.description);
     const matchesSearch = 
       details.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -549,20 +543,22 @@ function Cargo() {
               </button>
             </div>
             <form onSubmit={handleAddCargo} className="p-6 space-y-4">
-              <div className="space-y-2">
-                <label className="text-xs font-bold text-slate-555 dark:text-slate-400 uppercase">Customer Owner *</label>
-                <select
-                  required
-                  value={formData.customer_id}
-                  onChange={(e) => setFormData({ ...formData, customer_id: e.target.value })}
-                  className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-750 text-slate-850 dark:text-slate-100 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500 cursor-pointer"
-                >
-                  <option value="">Select a Customer</option>
-                  {customers.map((c) => (
-                    <option key={c.id} value={c.id}>{c.company_name}</option>
-                  ))}
-                </select>
-              </div>
+              {role !== "Customer" && (
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-slate-555 dark:text-slate-400 uppercase">Customer Owner *</label>
+                  <select
+                    required
+                    value={formData.customer_id}
+                    onChange={(e) => setFormData({ ...formData, customer_id: e.target.value })}
+                    className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-750 text-slate-850 dark:text-slate-100 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500 cursor-pointer"
+                  >
+                    <option value="">Select a Customer</option>
+                    {customers.map((c) => (
+                      <option key={c.id} value={c.id}>{c.company_name}</option>
+                    ))}
+                  </select>
+                </div>
+              )}
 
               <div className="space-y-2">
                 <label className="text-xs font-bold text-slate-555 dark:text-slate-400 uppercase">Cargo Description *</label>
@@ -675,19 +671,21 @@ function Cargo() {
               </button>
             </div>
             <form onSubmit={handleEditCargo} className="p-6 space-y-4">
-              <div className="space-y-2">
-                <label className="text-xs font-bold text-slate-555 dark:text-slate-400 uppercase">Customer Owner *</label>
-                <select
-                  required
-                  value={formData.customer_id}
-                  onChange={(e) => setFormData({ ...formData, customer_id: e.target.value })}
-                  className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-750 text-slate-850 dark:text-slate-100 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500 cursor-pointer"
-                >
-                  {customers.map((c) => (
-                    <option key={c.id} value={c.id}>{c.company_name}</option>
-                  ))}
-                </select>
-              </div>
+              {role !== "Customer" && (
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-slate-555 dark:text-slate-400 uppercase">Customer Owner *</label>
+                  <select
+                    required
+                    value={formData.customer_id}
+                    onChange={(e) => setFormData({ ...formData, customer_id: e.target.value })}
+                    className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-750 text-slate-850 dark:text-slate-100 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500 cursor-pointer"
+                  >
+                    {customers.map((c) => (
+                      <option key={c.id} value={c.id}>{c.company_name}</option>
+                    ))}
+                  </select>
+                </div>
+              )}
 
               <div className="space-y-2">
                 <label className="text-xs font-bold text-slate-555 dark:text-slate-400 uppercase">Cargo Description *</label>

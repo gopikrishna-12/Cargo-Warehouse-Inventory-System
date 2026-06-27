@@ -3,7 +3,10 @@ import { reportService } from "../services/reportService.js";
 export const reportController = {
   async getStats(req, res, next) {
     try {
-      const stats = await reportService.getDashboardStats();
+      const stats = await reportService.getDashboardStats({
+        userEmail: req.user.email,
+        userRole: req.user.role
+      });
       return res.status(200).json(stats);
     } catch (error) {
       next(error);

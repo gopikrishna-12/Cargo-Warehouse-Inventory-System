@@ -79,5 +79,41 @@
     "description": "Documentation Executive user profile.",
     "isActive": false,
     "passwordHash": "$2b$10$8EVP0DaAJmKJmhHSSEvffu9ffa3dT6UvxBMeHKis3LhHm5gFdVkdW"
+  },
+  {
+    "id": "u-749414",
+    "email": "verification9456@example.com",
+    "name": "Verification Lab Corp 9969",
+    "role": "Customer",
+    "description": "Customer Portal: view own cargo, download manifests, track shipping, billings.",
+    "isActive": true,
+    "passwordHash": "$2b$10$plSzJwPTQfOHNwQlHEA9mueItsP14N1fAYNKGKygelVX0rVE28tw."
+  },
+  {
+    "id": "u-610893",
+    "email": "gopi123@gmail.com",
+    "name": "Gopi",
+    "role": "Customer",
+    "description": "Customer Portal: view own cargo, download manifests, track shipping, billings.",
+    "isActive": true,
+    "passwordHash": "$2b$10$Tl81dyXeWTw/rgjFyC01R.iFhDC5W2L0XbVDKkZSBehHDTpPhdcHC"
+  },
+  {
+    "id": "u-344607",
+    "email": "sec_test_11146@example.com",
+    "name": "Security Test Corp",
+    "role": "Customer",
+    "description": "Customer Portal: view own cargo, download manifests, track shipping, billings.",
+    "isActive": true,
+    "passwordHash": "$2b$10$SU7bFq96jQD/1Hh8sbjove7H8GVbyixL1HDcGzXFAo4LX7PnU8yhW"
+  },
+  {
+    "id": "u-420551",
+    "email": "sec_test_5066@example.com",
+    "name": "Security Test Corp",
+    "role": "Customer",
+    "description": "Customer Portal: view own cargo, download manifests, track shipping, billings.",
+    "isActive": true,
+    "passwordHash": "$2b$10$1FcFm7DiQ/YumFP6KcBWluHMM0hJPPz3BqX4QZzbRV7b.YnpUp/aa"
   }
 ]

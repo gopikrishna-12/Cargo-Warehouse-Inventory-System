@@ -12,21 +12,21 @@ router.get("/:id", cargoController.getCargoById);
 
 router.post(
   "/",
-  requireRoles("Admin", "Operations Staff", "Warehouse Staff"),
+  requireRoles("Admin", "Operations Staff", "Warehouse Staff", "Customer"),
   cargoValidator,
   cargoController.createCargo
 );
 
 router.put(
   "/:id",
-  requireRoles("Admin", "Operations Staff", "Warehouse Staff"),
+  requireRoles("Admin", "Operations Staff", "Warehouse Staff", "Customer"),
   cargoValidator,
   cargoController.updateCargo
 );
 
 router.delete(
   "/:id",
-  requireRoles("Admin", "Operations Staff", "Warehouse Staff"),
+  requireRoles("Admin", "Operations Staff", "Warehouse Staff", "Customer"),
   cargoController.deleteCargo
 );
 

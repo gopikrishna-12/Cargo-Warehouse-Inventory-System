@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { apiService } from "../../services/api";
 import {
   FaWarehouse,
   FaChartPie,
@@ -22,6 +23,34 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
   // Hover state to control sidebar expansion on desktop/tablet
   const [isHovered, setIsHovered] = useState(false);
 
+  // Dynamic counts for sidebar badges
+  const [counts, setCounts] = useState({
+    cargo: null,
+    shipments: null,
+    documents: null
+  });
+
+  useEffect(() => {
+    async function loadCounts() {
+      try {
+        const data = await apiService.getDashboardStats();
+        if (data && data.stats) {
+          setCounts({
+            cargo: data.stats.cargoCount,
+            shipments: data.stats.shipmentCount,
+            documents: data.stats.documentsCount
+          });
+        }
+      } catch (err) {
+        console.error("Sidebar stats fetch failed:", err);
+      }
+    }
+    
+    if (user) {
+      loadCounts();
+    }
+  }, [user, role]);
+
   function handleLogoutClick() {
     logout();
     setSidebarOpen(false);
@@ -32,11 +61,26 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
   // Define WMS navigation items
   const allItems = [
     { title: "Dashboard", path: "/dashboard", icon: FaChartPie, badge: "Live" },
-    { title: "Cargo Management", path: "/dashboard/cargo", icon: FaBox, badge: "18" },
-    { title: "Shipments", path: "/dashboard/shipments", icon: FaTruck, badge: "3 Active" },
+    { 
+      title: "Cargo Management", 
+      path: "/dashboard/cargo", 
+      icon: FaBox, 
+      badge: counts.cargo !== null ? String(counts.cargo) : "..." 
+    },
+    { 
+      title: "Shipments", 
+      path: "/dashboard/shipments", 
+      icon: FaTruck, 
+      badge: counts.shipments !== null ? `${counts.shipments} Active` : "..." 
+    },
     { title: "Warehouse Zones", path: "/dashboard/warehouse", icon: FaWarehouse, badge: "4 Zones" },
     { title: "Customer Directory", path: "/dashboard/customers", icon: FaUsers, badge: "12 Clients" },
-    { title: "Documents", path: "/dashboard/documents", icon: FaFileAlt, badge: "8" },
+    { 
+      title: "Documents", 
+      path: "/dashboard/documents", 
+      icon: FaFileAlt, 
+      badge: counts.documents !== null ? String(counts.documents) : "..." 
+    },
     { title: "Reports", path: "/dashboard/reports", icon: FaChartBar, badge: "New" },
     { title: "User Management", path: "/dashboard/users", icon: FaUserCog, badge: "8 Staff" },
     { title: "Settings", path: "/dashboard/settings", icon: FaCog, badge: "System" },

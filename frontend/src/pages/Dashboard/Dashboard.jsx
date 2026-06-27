@@ -348,23 +348,29 @@ function Dashboard() {
 
   // Load support tickets from localStorage
   function loadSupportTickets() {
-    const saved = localStorage.getItem("orbem_support_tickets");
+    if (!user?.email) return;
+    const key = `orbem_support_tickets_${user.email}`;
+    const saved = localStorage.getItem(key);
     if (saved) {
       setTickets(JSON.parse(saved));
     } else {
-      const initial = [
-        { id: "TKT-1002", subject: "Dispatched Manifest Mismatch", description: "Cargo weight does not match the printed shipping certificate.", priority: "High", status: "In Progress" },
-        { id: "TKT-1004", subject: "Zone B Shelving Access", description: "Need updated operator clearances for Zone B high-tier shelves.", priority: "Medium", status: "Open" }
-      ];
-      setTickets(initial);
-      localStorage.setItem("orbem_support_tickets", JSON.stringify(initial));
+      if (user.email === "customer@orbem.com") {
+        const initial = [
+          { id: "TKT-1002", subject: "Dispatched Manifest Mismatch", description: "Cargo weight does not match the printed shipping certificate.", priority: "High", status: "In Progress" },
+          { id: "TKT-1004", subject: "Zone B Shelving Access", description: "Need updated operator clearances for Zone B high-tier shelves.", priority: "Medium", status: "Open" }
+        ];
+        setTickets(initial);
+        localStorage.setItem(key, JSON.stringify(initial));
+      } else {
+        setTickets([]);
+      }
     }
   }
 
   useEffect(() => {
     fetchDashboardDetails();
     loadSupportTickets();
-  }, [role]);
+  }, [role, user?.email]);
 
   function handleCreateTicket(e) {
     e.preventDefault();
@@ -380,7 +386,9 @@ function Dashboard() {
 
     const updated = [tkt, ...tickets];
     setTickets(updated);
-    localStorage.setItem("orbem_support_tickets", JSON.stringify(updated));
+    if (user?.email) {
+      localStorage.setItem(`orbem_support_tickets_${user.email}`, JSON.stringify(updated));
+    }
     setNewTicket({ subject: "", description: "", priority: "Medium" });
     setTicketModalOpen(false);
     toast.success("Support ticket registered successfully!");

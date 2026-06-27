@@ -26,10 +26,14 @@ export const documentRepository = {
 
     // Filter documents for Customer role
     if (userRole === "Customer" && userEmail) {
-      filtered = filtered.filter((doc) => {
-        const companyName = doc.cargo?.customers?.company_name?.toLowerCase() || "";
-        return companyName.includes("zenith") || companyName.includes(userEmail.split("@")[0]);
-      });
+      const { data: customer } = await supabase
+        .from("customers")
+        .select("id")
+        .eq("email", userEmail)
+        .maybeSingle();
+
+      if (!customer) return [];
+      filtered = filtered.filter((doc) => doc.cargo?.customer_id === customer.id);
     }
 
     if (search) {

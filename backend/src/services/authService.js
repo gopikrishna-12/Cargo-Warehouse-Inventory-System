@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import { userRepository } from "../repositories/userRepository.js";
+import { customerRepository } from "../repositories/customerRepository.js";
 import { generateToken } from "../utils/jwt.js";
 import { auditService } from "./auditService.js";
 
@@ -41,6 +42,55 @@ export const authService = {
         role: user.role,
         description: user.description
       }
+    };
+  },
+
+  async register(customerData) {
+    const email = customerData.email.toLowerCase().trim();
+    const existingUser = userRepository.findByEmail(email);
+    if (existingUser) {
+      throw new Error("A user with this email address already exists.");
+    }
+
+    // Hash the password
+    const saltRounds = 10;
+    const passwordHash = await bcrypt.hash(customerData.password, saltRounds);
+
+    // Create the customer record in Supabase
+    const dbCustomer = await customerRepository.create({
+      company_name: customerData.company_name.trim(),
+      email: email,
+      phone: customerData.phone ? customerData.phone.trim() : null,
+      address: customerData.address ? customerData.address.trim() : null
+    });
+
+    // Create the user login credentials in users.json
+    const newUser = {
+      id: "u-" + Math.floor(100000 + Math.random() * 900000),
+      email: email,
+      name: customerData.company_name.trim(),
+      role: "Customer",
+      description: "Customer Portal: view own cargo, download manifests, track shipping, billings.",
+      isActive: true,
+      passwordHash
+    };
+
+    userRepository.create(newUser);
+
+    // Log registration audit
+    await auditService.log({
+      userId: email,
+      action: `Customer self-registration complete: ${customerData.company_name}`,
+      entityName: "users",
+      entityId: newUser.id
+    });
+
+    return {
+      id: newUser.id,
+      email: newUser.email,
+      name: newUser.name,
+      role: newUser.role,
+      customerId: dbCustomer.id
     };
   },
 

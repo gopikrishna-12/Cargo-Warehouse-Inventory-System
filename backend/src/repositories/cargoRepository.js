@@ -1,7 +1,7 @@
 import { supabase } from "../config/database/supabaseClient.js";
 
 export const cargoRepository = {
-  async findAll({ search, status }) {
+  async findAll({ search, status, userEmail, userRole }) {
     let query = supabase
       .from("cargo")
       .select(`
@@ -24,6 +24,18 @@ export const cargoRepository = {
     if (error) throw error;
     
     let filtered = data || [];
+
+    // Filter by customer if logged in role is Customer
+    if (userRole === "Customer" && userEmail) {
+      const { data: customer } = await supabase
+        .from("customers")
+        .select("id")
+        .eq("email", userEmail)
+        .maybeSingle();
+
+      if (!customer) return [];
+      filtered = filtered.filter(item => item.customer_id === customer.id);
+    }
 
     if (status && status !== "all") {
       filtered = filtered.filter(item => item.status === status);

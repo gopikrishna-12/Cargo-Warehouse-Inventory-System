@@ -5,7 +5,12 @@ export const cargoController = {
   async getCargoList(req, res, next) {
     try {
       const { search, status } = req.query;
-      const list = await cargoService.getCargoList({ search, status });
+      const list = await cargoService.getCargoList({
+        search,
+        status,
+        userEmail: req.user.email,
+        userRole: req.user.role
+      });
       return res.status(200).json(list);
     } catch (error) {
       next(error);

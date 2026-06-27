@@ -17,6 +17,20 @@ export const authController = {
     }
   },
 
+  async register(req, res, next) {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    try {
+      const result = await authService.register(req.body);
+      return res.status(201).json(result);
+    } catch (error) {
+      return res.status(400).json({ error: error.message });
+    }
+  },
+
   async logout(req, res, next) {
     try {
       if (req.user) {

@@ -42,6 +42,10 @@ export const apiService = {
     const res = await API.post("/auth/login", { email, password });
     return res.data;
   },
+  async register(data) {
+    const res = await API.post("/auth/register", data);
+    return res.data;
+  },
   async logout() {
     try {
       await API.post("/auth/logout");

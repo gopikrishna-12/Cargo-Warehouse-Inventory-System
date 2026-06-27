@@ -1,9 +1,10 @@
 import { cargoRepository } from "../repositories/cargoRepository.js";
 import { auditService } from "./auditService.js";
+import { supabase } from "../config/database/supabaseClient.js";
 
 export const cargoService = {
-  async getCargoList({ search, status }) {
-    return await cargoRepository.findAll({ search, status });
+  async getCargoList({ search, status, userEmail, userRole }) {
+    return await cargoRepository.findAll({ search, status, userEmail, userRole });
   },
 
   async getCargoById(id) {
@@ -13,6 +14,19 @@ export const cargoService = {
   },
 
   async createCargo(cargoData, requestedByUser) {
+    const { data: customer } = await supabase
+      .from("customers")
+      .select("id")
+      .eq("email", requestedByUser)
+      .maybeSingle();
+
+    if (customer) {
+      cargoData.customer_id = customer.id;
+      if (!cargoData.status) {
+        cargoData.status = "Pending";
+      }
+    }
+
     const cargo = await cargoRepository.create(cargoData);
     
     // Parse description for readable log action
@@ -38,6 +52,19 @@ export const cargoService = {
   async updateCargo(id, cargoData, requestedByUser) {
     const oldCargo = await cargoRepository.findById(id);
     if (!oldCargo) throw new Error("Cargo record not found.");
+
+    const { data: customer } = await supabase
+      .from("customers")
+      .select("id")
+      .eq("email", requestedByUser)
+      .maybeSingle();
+
+    if (customer) {
+      if (oldCargo.customer_id !== customer.id) {
+        throw new Error("Unauthorized access. You do not own this cargo record.");
+      }
+      cargoData.customer_id = customer.id;
+    }
 
     const updatedCargo = await cargoRepository.update(id, cargoData);
 
@@ -66,6 +93,16 @@ export const cargoService = {
   async deleteCargo(id, requestedByUser) {
     const oldCargo = await cargoRepository.findById(id);
     if (!oldCargo) throw new Error("Cargo record not found.");
+
+    const { data: customer } = await supabase
+      .from("customers")
+      .select("id")
+      .eq("email", requestedByUser)
+      .maybeSingle();
+
+    if (customer && oldCargo.customer_id !== customer.id) {
+      throw new Error("Unauthorized access. You do not own this cargo record.");
+    }
 
     try {
       await cargoRepository.delete(id);

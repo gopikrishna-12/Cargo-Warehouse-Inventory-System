@@ -28,10 +28,14 @@ export const shipmentRepository = {
 
     // Filter by Customer role so they only see their own shipments
     if (userRole === "Customer" && userEmail) {
-      filtered = filtered.filter((item) => {
-        const companyName = item.cargo?.customers?.company_name?.toLowerCase() || "";
-        return companyName.includes("zenith") || companyName.includes(userEmail.split("@")[0]);
-      });
+      const { data: customer } = await supabase
+        .from("customers")
+        .select("id")
+        .eq("email", userEmail)
+        .maybeSingle();
+
+      if (!customer) return [];
+      filtered = filtered.filter((item) => item.cargo?.customer_id === customer.id);
     }
 
     if (status && status !== "all") {
