@@ -15,7 +15,8 @@ import {
   FaEnvelope,
   FaPhone,
   FaMapMarkerAlt,
-  FaLock
+  FaLock,
+  FaUser
 } from "react-icons/fa";
 
 function Login() {
@@ -61,7 +62,7 @@ function Login() {
   async function handleRegisterSubmit(e) {
     e.preventDefault();
     if (!companyName) {
-      toast.error("Company name is required.");
+      toast.error("Customer name is required.");
       return;
     }
     if (!regEmail) {
@@ -238,18 +239,18 @@ function Login() {
               <>
                 <div>
                   <h2 className="text-2xl font-extrabold text-slate-900 dark:text-white leading-tight">Create Customer Account</h2>
-                  <p className="text-slate-400 text-xs mt-1">Register your logistics company to manage cargo and track shipments.</p>
+                  <p className="text-slate-400 text-xs mt-1">Register your account to manage cargo and track shipments.</p>
                 </div>
 
                 <form onSubmit={handleRegisterSubmit} className="space-y-3.5">
                   <div className="space-y-1">
-                    <label className="text-[10px] font-bold text-slate-450 dark:text-slate-400 uppercase tracking-widest block">Company Name *</label>
+                    <label className="text-[10px] font-bold text-slate-450 dark:text-slate-400 uppercase tracking-widest block">Customer Name *</label>
                     <div className="relative">
-                      <FaBuilding className="absolute left-3 top-3 text-slate-400 text-xs" />
+                      <FaUser className="absolute left-3 top-3 text-slate-400 text-xs" />
                       <input
                         type="text"
                         required
-                        placeholder="e.g. Acme Corp"
+                        placeholder="e.g. Gopi"
                         value={companyName}
                         onChange={(e) => setCompanyName(e.target.value)}
                         className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl pl-9 pr-4 py-2.5 text-sm focus:outline-none focus:border-blue-500 dark:focus:border-blue-500 transition-colors"
