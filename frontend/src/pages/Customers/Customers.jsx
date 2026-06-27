@@ -286,19 +286,6 @@ function Customers() {
           <h1 className="text-2xl font-bold text-slate-800 dark:text-white">Customer Directory</h1>
           <p className="text-slate-500 dark:text-slate-400 text-sm">Manage client shipping accounts, query cargo histories, and issue financial billing invoices.</p>
         </div>
-
-        {canModify && (
-          <button
-            onClick={() => {
-              resetForm();
-              setAddModalOpen(true);
-            }}
-            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl px-4 py-2.5 text-sm shadow-xs transition-colors cursor-pointer"
-          >
-            <FaPlus />
-            <span>Add Customer</span>
-          </button>
-        )}
       </div>
 
       {/* Search Input bar */}
@@ -559,83 +546,6 @@ function Customers() {
                 Close Ledger
               </button>
             </div>
-          </div>
-        </div>
-      )}
-
-      {/* REGISTER CUSTOMER MODAL */}
-      {addModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs p-4">
-          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-xl w-full max-w-md border border-slate-150 dark:border-slate-700 overflow-hidden animate-in fade-in zoom-in-95 duration-200">
-            <div className="px-6 py-4 bg-slate-50 dark:bg-slate-900 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center">
-              <h3 className="font-semibold text-slate-800 dark:text-white text-base">Register Customer Client</h3>
-              <button onClick={() => setAddModalOpen(false)} className="text-slate-400 hover:text-slate-700 dark:hover:text-slate-350 cursor-pointer">
-                <FaTimes />
-              </button>
-            </div>
-            <form onSubmit={handleAddCustomer} className="p-6 space-y-4">
-              <div className="space-y-2">
-                <label className="text-xs font-bold text-slate-555 dark:text-slate-400 uppercase">Company Name *</label>
-                <input
-                  type="text"
-                  required
-                  placeholder="e.g. Zenith Shipping Logistics"
-                  value={formData.company_name}
-                  onChange={(e) => setFormData({ ...formData, company_name: e.target.value })}
-                  className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-750 text-slate-800 dark:text-slate-100 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-xs font-bold text-slate-555 dark:text-slate-400 uppercase">Email Address *</label>
-                <input
-                  type="email"
-                  required
-                  placeholder="e.g. operations@zenith.com"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-750 text-slate-800 dark:text-slate-100 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-xs font-bold text-slate-555 dark:text-slate-400 uppercase">Contact Phone Number</label>
-                <input
-                  type="text"
-                  placeholder="e.g. +1 (555) 902-1234"
-                  value={formData.phone}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-750 text-slate-800 dark:text-slate-100 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-xs font-bold text-slate-555 dark:text-slate-400 uppercase">Billing Address</label>
-                <input
-                  type="text"
-                  placeholder="e.g. 100 Portway blvd, New Jersey, NJ"
-                  value={formData.address}
-                  onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                  className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-750 text-slate-800 dark:text-slate-100 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-555"
-                />
-              </div>
-
-              <div className="flex justify-end gap-3 pt-4 border-t border-slate-50 dark:border-slate-700">
-                <button
-                  type="button"
-                  onClick={() => setAddModalOpen(false)}
-                  className="px-4 py-2 text-sm font-semibold text-slate-650 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 rounded-xl transition-colors cursor-pointer"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition-colors cursor-pointer"
-                >
-                  Add Customer
-                </button>
-              </div>
-            </form>
           </div>
         </div>
       )}
