@@ -1,7 +1,18 @@
 import axios from "axios";
 
+let backendBaseURL = import.meta.env.VITE_API_URL;
+
+if (!backendBaseURL) {
+  if (typeof window !== "undefined" && window.location.hostname !== "localhost") {
+    // Dynamically target the host PC running the backend when accessed on a local network or hosted environment
+    backendBaseURL = `${window.location.protocol}//${window.location.hostname}:5000/api`;
+  } else {
+    backendBaseURL = "http://localhost:5000/api";
+  }
+}
+
 const API = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000/api",
+  baseURL: backendBaseURL,
   timeout: 10000,
 });
 

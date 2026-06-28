@@ -112,7 +112,14 @@ export function AuthProvider({ children }) {
       
       return response;
     } catch (error) {
-      const msg = error.response?.data?.error || "Login failed. Please verify credentials.";
+      let msg = "Login failed. Please verify credentials.";
+      if (error.response) {
+        msg = error.response.data?.error || msg;
+      } else if (error.request) {
+        msg = "Unable to connect to the backend server. Please make sure the backend is running.";
+      } else {
+        msg = error.message || msg;
+      }
       throw new Error(msg);
     }
   }
